@@ -9,11 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.3",
-    "chrome-aws-lambda": "^2.1.1",
     "puppeteer-core": "^2.1.1"
   },
   "devDependencies": {
-    "serverless-plugin-chrome": "^1.0.0-55.3"
+    "chrome-aws-lambda": "^2.1.1"
   }
 }
