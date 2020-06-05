@@ -12,6 +12,7 @@ exports.handler = async (event, context, callback) => {
   let responseCode = 200;
 
   const url = `https://www.gasbuddy.com/gasprices/${state}/${city}`;
+  const url2 = `https://www.gasbuddy.com/gasprices/${state}`;
 
   try {
     browser = await chromium.puppeteer.launch({
@@ -24,7 +25,13 @@ exports.handler = async (event, context, callback) => {
     page = await browser.newPage()
     const navigationPromise = page.waitForNavigation()
     await page.setViewport({ width: 1920, height: 1001 })
-    await page.goto(url, { waitUntil: 'networkidle2' })
+
+    if(!city) {
+      await page.goto(url2, { waitUntil: 'networkidle2' })
+    } else {
+      await page.goto(url, { waitUntil: 'networkidle2' })
+    }
+    
     await navigationPromise
 
     const gasData = await page.evaluate(() => {
