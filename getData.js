@@ -6,11 +6,10 @@ let browser = null
 let page = null
 
 exports.handler = async (event, context, callback) => {
-  console.log('START')
   let { state } =  event.queryStringParameters
   let { city } =  event.queryStringParameters
-  let responseCode = 200;
   let data;
+
   const url = `https://www.gasbuddy.com/gasprices/${state}/${city}`
 
   try {
@@ -19,15 +18,15 @@ exports.handler = async (event, context, callback) => {
       defaultViewport: chromium.defaultViewport,
       executablePath: await chromium.executablePath,
       headless: chromium.headless
-   })
-   
-   page = await browser.newPage()
-   const navigationPromise = page.waitForNavigation()
-   await page.setViewport({ width: 1920, height: 1001 })
-   await page.goto(url, { waitUntil: 'networkidle2' })
-   await navigationPromise
-   
-   const gasData = await page.evaluate(() => {
+  })
+
+    page = await browser.newPage()
+    const navigationPromise = page.waitForNavigation()
+    await page.setViewport({ width: 1920, height: 1001 })
+    await page.goto(url, { waitUntil: 'networkidle2' })
+    await navigationPromise
+
+    const gasData = await page.evaluate(() => {
     const gasStations = [];
     // get the gas elements
     const gasElms = document.querySelectorAll('tr.accordion-toggle');
@@ -48,7 +47,9 @@ exports.handler = async (event, context, callback) => {
     });
     return gasStations;
   });  
+
   data = gasData
+
 } catch (err) {
     responseCode = 500;
     console.error('Error grabbing gas data', err);
@@ -59,13 +60,12 @@ exports.handler = async (event, context, callback) => {
 
     console.log("THE END")
     const response = {
-      statusCode: responseCode,
+      statusCode: 200,
       headers: {
         'Access-Control-Allow-Origin': '*', // Required for CORS support to work
       },
       body: JSON.stringify({data}, null, 2),
     };
     console.log("RESPONSE", response)
-    console.log('THE END')
     callback(null, response);
 };
