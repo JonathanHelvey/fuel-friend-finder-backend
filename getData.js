@@ -1,16 +1,17 @@
 'use strict';
 
-const chromium = require('chrome-aws-lambda')
+const chromium = require('chrome-aws-lambda');
 
-let browser = null
-let page = null
+let browser = null;
+let page = null;
 
 exports.handler = async (event, context, callback) => {
-  let { state } =  event.queryStringParameters
-  let { city } =  event.queryStringParameters
+  let { state } =  event.queryStringParameters;
+  let { city } =  event.queryStringParameters;
   let data;
+  let responseCode = 200;
 
-  const url = `https://www.gasbuddy.com/gasprices/${state}/${city}`
+  const url = `https://www.gasbuddy.com/gasprices/${state}/${city}`;
 
   try {
     browser = await chromium.puppeteer.launch({
@@ -60,7 +61,7 @@ exports.handler = async (event, context, callback) => {
 
     console.log("THE END")
     const response = {
-      statusCode: 200,
+      statusCode: responseCode,
       headers: {
         'Access-Control-Allow-Origin': '*', // Required for CORS support to work
       },
