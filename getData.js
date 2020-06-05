@@ -44,10 +44,12 @@ exports.handler = async (event, context, callback) => {
       try {
         gasJson.name = gasElement.querySelector('strong').innerText;
         gasJson.price = gasElement.querySelector('div.gb-price').innerText;
-        // gasJson.location = gasElement.innerText; // parse string.
-        // if(gasElement.querySelector('strong.price')){
-        //     gasJson.price = gasElement.querySelector('strong.price').innerText;
-        // }
+        // Parse address string. TODO: Is there a better Fix?
+        gasJson.address = gasElement.innerText.replace(/\s+/g, ' ').trim().replace("reviews)", "").replace("(", "").slice(14, -24); 
+        gasJson.city = gasElement.querySelector('div.visible-xs').innerText
+        if(gasElement.querySelector('strong.price')){
+            gasJson.price = gasElement.querySelector('strong.price').innerText;
+        }
       } catch (exception) {
         console.log('Error Grabing Data');
       }
