@@ -1,5 +1,5 @@
 'use strict';
-
+// Add Linter.
 const chromium = require('chrome-aws-lambda');
 
 let browser = null;
@@ -44,7 +44,7 @@ exports.handler = async (event, context, callback) => {
       try {
         gasJson.name = gasElement.querySelector('strong').innerText;
         gasJson.price = gasElement.querySelector('div.gb-price').innerText;
-        // Parse address string. TODO: Is there a better Fix?
+        // TODO: Is there a better to parse String?
         gasJson.address = gasElement.innerText.replace(/\s+/g, ' ').trim().replace("reviews)", "").replace("(", "").slice(14, -24); 
         gasJson.city = gasElement.querySelector('div.visible-xs').innerText
         if(gasElement.querySelector('strong.price')){
