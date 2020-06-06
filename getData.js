@@ -1,5 +1,5 @@
 'use strict';
-// Add Linter.
+// TODO: Add Linter.
 const chromium = require('chrome-aws-lambda');
 
 let browser = null;
